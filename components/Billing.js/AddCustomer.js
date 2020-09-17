@@ -8,9 +8,10 @@ import {
   FlatList,
   TextInput,
   ScrollView,
+  Switch,
 } from "react-native";
 import CheckBox from "@react-native-community/checkbox";
-
+import PercentSplits from "./PercentSplits";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
 const windowWidth = Dimensions.get("window").width;
@@ -18,6 +19,7 @@ const windowHeight = Dimensions.get("window").height;
 
 import LeftArrow from "../img/leftArrow";
 import Person from "../img/person";
+import EqualSplits from "./EqualSplits";
 
 const AddCustomer = ({ route }) => {
   const [selectedId, setSelectedId] = useState(null);
@@ -75,7 +77,9 @@ const AddCustomer = ({ route }) => {
   const [text, setText] = useState("");
   const [count, setCount] = useState(1);
   const [count1, setCount1] = useState(0);
-
+  const [toggleFunctionSplit, settoggleFunctionSplit] = useState(false);
+  const [equalSplit, setEqualSplit] = useState(false);
+  const [percentSplit, setPercentSplit] = useState(false);
   const textInputChange = (val) => {
     setData({
       ...data,
@@ -86,11 +90,6 @@ const AddCustomer = ({ route }) => {
   const onCheckPress = (index) => {
     [...CustomerOrder];
     var temp = [...CustomerOrder];
-    // if (temp[index].checked === undefined) {
-    //   temp[index].checked = true;
-    // } else {
-    //     temp[index].checked = !temp[index].checked;
-    // }
     temp[index].checked = !temp[index].checked;
 
     setCustomerOrder(temp);
@@ -133,6 +132,7 @@ const AddCustomer = ({ route }) => {
         count1: count1,
         totalAmount: tempCount,
         navigation: route.params.navigation,
+        tableNo: route.params.tableNo,
       });
     }
   };
@@ -156,8 +156,8 @@ const AddCustomer = ({ route }) => {
           flexDirection: "row",
           borderBottomWidth: 2,
           borderBottomColor: "#a9a9a9",
-          top: 0.03 * windowHeight,
-          marginBottom: windowHeight * 0.02,
+          top: 20,
+          marginBottom: 15,
         }}
       >
         <CheckBox
@@ -176,7 +176,49 @@ const AddCustomer = ({ route }) => {
       </View>
     );
   };
-
+  const toggleFun = (val) => {
+    settoggleFunctionSplit(!val);
+  };
+  const manageFunctionsToggled = (val) => {
+    if (val === "equal") {
+      setEqualSplit(!equalSplit);
+      setPercentSplit(false);
+    } else if (val === "percent") {
+      setPercentSplit(!percentSplit);
+      setEqualSplit(false);
+    }
+  };
+  const handleEqualSplitRoute = (names) => {
+    let newArr = [];
+    names.map((each, index) => {
+      var tObj = { personName: each, id: index, OrderDetails: [] };
+      newArr.push(tObj);
+    });
+    route.params.navigation.push("SplitAmountScreen", {
+      abc: newArr,
+      count1: names.length,
+      totalAmount: route.params.totalUpdated / names.length,
+      totalFinal: route.params.totalUpdated,
+      navigation: route.params.navigation,
+      tableNo: route.params.tableNo,
+    });
+  };
+  const handlePrecentSplitRoute = (names) => {
+    // let newArr = [];
+    // names.map((each, index) => {
+    //   var tObj = { personName: each, id: index, OrderDetails: [] };
+    //   newArr.push(tObj);
+    // });
+    route.params.navigation.push("SplitAmountScreen", {
+      abc: names,
+      count1: names.length,
+      totalAmount: route.params.totalUpdated,
+      totalPercentFinal: route.params.totalUpdated,
+      // totalFinal: route.params.totalUpdated,
+      navigation: route.params.navigation,
+      tableNo: route.params.tableNo,
+    });
+  };
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.TitleContainer}>
@@ -185,68 +227,167 @@ const AddCustomer = ({ route }) => {
         </TouchableOpacity>
         <Text style={styles.title}>Add Customer</Text>
       </View>
-
-      <View style={styles.nameContainer}>
-        <Person left={windowWidth * 0.1} />
-        <Text style={styles.nameText}>Name</Text>
-      </View>
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(val) => textInputChange(val)}
-          value={text}
-        />
-      </View>
-
-      <Text style={styles.textContainer}>
-        Select the list of items to the list of customer
-      </Text>
-
-      <View style={styles.titleText}>
-        <Text style={styles.titleTextContainer}>Qty</Text>
-        <Text style={styles.titleTextContainer}>Item</Text>
-        <Text style={styles.titleTextContainer}>Amount</Text>
-      </View>
-      <ScrollView
-        style={{ height: windowWidth * 0.95, marginTop: 10 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <FlatList
-          data={CustomerOrder}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          extraData={selectedId}
-        />
-      </ScrollView>
-      <View
-        style={{
-          height: windowHeight * 0.16,
-          backgroundColor: "#f9eae4",
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 40,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 1,
-        }}
-      >
-        <TouchableOpacity style={styles.billText} onPress={handleAddCustomer}>
-          <Text
-            style={{
-              fontFamily: "Poppins-Light",
-              color: "#ffffff",
-              fontSize: 22,
-            }}
-          >
-            Bill This
-          </Text>
-        </TouchableOpacity>
-        <View>
-          {temp5.map((e) => (
-            <Text>{e.personName}</Text>
-          ))}
+      <View style={{ width: windowWidth, flexDirection: "row" }}>
+        <View style={{ flex: 2 }} />
+        <View style={{ flex: 1, height: 30 }}>
+          <Switch
+            trackColor={{ false: "#dddddd", true: "#FF264D" }}
+            thumbColor={toggleFunctionSplit ? "#dddddd" : "#FF264D"}
+            onValueChange={() => toggleFun(toggleFunctionSplit)}
+            value={toggleFunctionSplit}
+          />
         </View>
+      </View>
+      <View>
+        {
+          //to toggle the functional screen
+          toggleFunctionSplit === true ? (
+            <View>
+              <Text style={styles.funspTit}>This is Functional Splits</Text>
+              <View>
+                <View style={styles.horiScroll}>
+                  {/*this contains options of spliting bill using functions*/}
+                  <ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    style={{ width: windowWidth - 20, flexDirection: "row" }}
+                  >
+                    <TouchableOpacity
+                      style={
+                        !equalSplit ? styles.optionBtn : styles.optionBtnEq
+                      }
+                      onPress={() => manageFunctionsToggled("equal")}
+                    >
+                      <Text
+                        style={
+                          !equalSplit ? { color: "#fff" } : { color: "#282828" }
+                        }
+                      >
+                        Equal Split
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={
+                        !percentSplit ? styles.optionBtn : styles.optionBtnEq
+                      }
+                      onPress={() => manageFunctionsToggled("percent")}
+                    >
+                      <Text
+                        style={
+                          !percentSplit
+                            ? { color: "#fff" }
+                            : { color: "#282828" }
+                        }
+                      >
+                        Percent Split
+                      </Text>
+                    </TouchableOpacity>
+                  </ScrollView>
+                  <EqualSplits
+                    equalSplit={equalSplit}
+                    totalAmount={route.params.totalUpdated}
+                    handleEqualSplitRoute={handleEqualSplitRoute}
+                  />
+                  <PercentSplits
+                    percentSplit={percentSplit}
+                    handlePrecentSplitRoute={handlePrecentSplitRoute}
+                  />
+                </View>
+              </View>
+            </View>
+          ) : (
+            <View style={{ width: windowWidth, height: windowHeight }}>
+              <View style={styles.nameContainer}>
+                <Person left={windowWidth * 0.1} />
+                <Text style={styles.nameText}>Name</Text>
+              </View>
+
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.textInput}
+                  onChangeText={(val) => textInputChange(val)}
+                  value={text}
+                />
+              </View>
+
+              <Text style={styles.textContainer}>
+                Select the list of items to the list of customer
+              </Text>
+
+              <View style={styles.titleText}>
+                <Text style={styles.titleTextContainer}>Qty</Text>
+                <Text style={styles.titleTextContainer}>Item</Text>
+                <Text style={styles.titleTextContainer}>Amount</Text>
+              </View>
+              <ScrollView
+                style={{
+                  marginTop: 0,
+                  width: windowWidth,
+                  height: windowWidth,
+                }}
+                showsVerticalScrollIndicator={false}
+              >
+                <FlatList
+                  data={CustomerOrder}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item.id}
+                  extraData={selectedId}
+                />
+              </ScrollView>
+              <View
+                style={{
+                  position: "absolute",
+                  alignItems: "center",
+                  bottom: 0,
+                  width: windowWidth,
+                }}
+              >
+                <View
+                  style={{
+                    width: windowWidth,
+                    height: windowHeight * 0.35,
+                    backgroundColor: "#FFE4E9",
+                    borderTopLeftRadius: 20,
+                    borderTopRightRadius: 40,
+                    // flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    paddingTop: 40,
+                    paddingHorizontal: 20,
+                    // flexDirection: ""
+                    position: "relative",
+                  }}
+                >
+                  <TouchableOpacity
+                    style={styles.billText}
+                    onPress={handleAddCustomer}
+                  >
+                    <Text
+                      style={{
+                        fontFamily: "Poppins-Light",
+                        color: "#ffffff",
+                        fontSize: 22,
+                      }}
+                    >
+                      Bill This
+                    </Text>
+                  </TouchableOpacity>
+                  <Text
+                    style={{ textAlign: "center", fontSize: 10, marginTop: 10 }}
+                  >
+                    By clicking this you are adding dishes to members, to split
+                    the bill
+                  </Text>
+                  <View>
+                    {temp5.map((e) => (
+                      <Text>{e.personName}</Text>
+                    ))}
+                  </View>
+                </View>
+              </View>
+            </View>
+          )
+        }
       </View>
     </View>
   );
@@ -270,7 +411,7 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     flexDirection: "row",
-    marginTop: windowHeight * 0.13,
+    marginTop: windowWidth / 20,
   },
   nameText: {
     fontFamily: "Poppins-Light",
@@ -353,11 +494,41 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.07,
     width: windowWidth * 0.35,
     backgroundColor: "#ff264d",
-    marginTop: windowHeight * 0.002,
-    marginRight: windowWidth * 0.06,
+    // marginTop: windowHeight * 0.002,
+    // marginRight: windowWidth * 0.06,
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
+    elevation: 4,
+  },
+  funspTit: {
+    fontSize: 20,
+    color: "#FF264D",
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  optionBtn: {
+    backgroundColor: "#FF264D",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 17,
+    paddingVertical: 7,
+    borderRadius: 50,
+    marginRight: 15,
+  },
+  horiScroll: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+  },
+  optionBtnEq: {
+    backgroundColor: "#dddddd",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 17,
+    paddingVertical: 7,
+    borderRadius: 50,
+    marginRight: 15,
   },
 });
 

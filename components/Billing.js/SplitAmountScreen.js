@@ -79,6 +79,8 @@ const SplitAmountScreen = ({ route, navigation }) => {
                   <Text style={styles.detailsTextContainer}>{v.count}</Text>
                 </>
               ))}
+              {route.params.totalFinal ? <Text>1</Text> : <View></View>}
+              {route.params.totalPercentFinal ? <Text>1</Text> : <View></View>}
             </View>
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <Text style={styles.titleTextContainer}>Item</Text>
@@ -87,6 +89,16 @@ const SplitAmountScreen = ({ route, navigation }) => {
                   <Text style={styles.detailsTextContainer}>{v.name}</Text>
                 </>
               ))}
+              {route.params.totalFinal ? (
+                <Text>Equal Splits</Text>
+              ) : (
+                <View></View>
+              )}
+              {route.params.totalPercentFinal ? (
+                <Text>Percent Split</Text>
+              ) : (
+                <View></View>
+              )}
             </View>
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <Text style={styles.titleTextContainer}>Amount</Text>
@@ -95,6 +107,16 @@ const SplitAmountScreen = ({ route, navigation }) => {
                   <Text style={styles.detailsTextContainer2}>${v.total}</Text>
                 </>
               ))}
+              {route.params.totalFinal ? (
+                <Text>{route.params.totalAmount}</Text>
+              ) : (
+                <View></View>
+              )}
+              {route.params.totalPercentFinal ? (
+                <Text>{item.percentSplit} %</Text>
+              ) : (
+                <View></View>
+              )}
             </View>
           </View>
         </View>

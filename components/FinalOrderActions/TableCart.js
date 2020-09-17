@@ -9,7 +9,6 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
-import PageBackSVG from "../../assets/Svgs/PageBackSVG";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import RightArrowSVG from "../../assets/Svgs/RightArrowSVG";
 import BottomSheet from "reanimated-bottom-sheet";
@@ -108,16 +107,45 @@ export default function TableCart({ route }) {
       </View>
     );
   };
+  const renderSplitBillBtn = () => {
+    return (
+      <View style={styles.secondSheet}>
+        <TouchableOpacity
+          style={styles.secondSheetBtn}
+          onPress={() => {
+            bs.current.snapTo(1);
+            setcallBillSplit(false);
+          }}
+        >
+          <Text style={styles.secondBtnText}>SINGLE BILL</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.secondSheetBtn}
+          onPress={() => handleSplitNav()}
+        >
+          <Text style={styles.secondBtnText}>SPLIT BILL</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+  const [htSheet, setHtSheet] = useState(0);
   let bs = React.createRef();
   let fall = new Animated.Value();
   const [callPromo, setCallPromo] = useState(false);
+  const [callBillSplit, setcallBillSplit] = useState(false);
   const manageBottomsheet = () => {
     if (callPromo === true) {
+      setHtSheet(height - 100);
       return renderPromoChange();
+    } else if (callBillSplit === true) {
+      setHtSheet(width / 1.5);
+      return renderSplitBillBtn();
     }
   };
 
   const handleSplitNav = () => {
+    bs.current.snapTo(1);
+    setcallBillSplit(false);
     navigation.push("AddCustomer", {
       navigation: navigation,
       order: Order,
@@ -130,7 +158,7 @@ export default function TableCart({ route }) {
     <SafeAreaView style={styles.mainTableCart}>
       <BottomSheet
         ref={bs}
-        snapPoints={[height - 100, 0]}
+        snapPoints={[htSheet, 0]}
         renderContent={() => manageBottomsheet()}
         initialSnap={1}
         callbackNode={fall}
@@ -138,24 +166,18 @@ export default function TableCart({ route }) {
         userPromo={promos.promos}
       />
       <View style={styles.TopDesign}>
-        {/*<TouchableOpacity
-          style={{ paddingLeft: 15 }}
-          onPress={() => route.params.navigation.pop()}
-        >
-          <PageBackSVG style={styles.pageBack} />
-        </TouchableOpacity>*/}
         <Text style={styles.pageTit}>{route.params.pageTitle}</Text>
       </View>
       <View style={styles.mainBelowTop}>
         <View style={styles.pageTitBelow}>
           <Text style={styles.titBelow}>Table Cart</Text>
           <Text style={styles.hotNameBelow}>{Order.hotelName}</Text>
+          <Text style={styles.tableNo}>Table {Order.tableNo}</Text>
         </View>
         <ScrollView
-          style={{ height: width * 0.95, marginTop: 10, width: width }}
-          showsVerticalScrollIndicator={false}
+          style={{ marginTop: 10, width: width, height: width / 1.4 }}
+          // showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.tableNo}>Table {Order.tableNo}</Text>
           {/* todo: add the dishes to be displayed on this page*/}
           <FlatList
             data={Order.dishSelected}
@@ -177,7 +199,7 @@ export default function TableCart({ route }) {
           />
         </ScrollView>
       </View>
-      <View style={{ position: "absolute", bottom: 0 }}>
+      <View style={styles.bottomContent}>
         <View style={{ width: width, height: width / 1.2 }}>
           <TouchableOpacity
             style={styles.promoBtn}
@@ -223,7 +245,10 @@ export default function TableCart({ route }) {
           <View style={{ flex: 0.5 }}>
             <TouchableOpacity
               style={styles.bottomPayBtn}
-              onPress={() => handleSplitNav()}
+              onPress={() => {
+                bs.current.snapTo(0);
+                setcallBillSplit(true);
+              }}
             >
               <Text style={styles.botPayBtnTit}>Bill This</Text>
               <RightArrowSVG />
@@ -274,7 +299,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "700",
     color: "#282828",
-    marginLeft: 20,
+    // marginLeft: 20,
+    alignItems: "baseline",
+    justifyContent: "flex-start",
+  },
+  bottomContent: {
+    position: "absolute",
+    bottom: 0,
+    zIndex: 8,
   },
   promoBtn: {
     width: "50%",
@@ -284,6 +316,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#fff",
   },
   totalBottom: {
     position: "absolute",
@@ -377,4 +410,23 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     elevation: 3,
   },
+  secondSheet: {
+    width: width,
+    height: width / 1.35,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    padding: 40,
+    backgroundColor: "#FFE4E9",
+    borderRadius: 35,
+  },
+  secondSheetBtn: {
+    width: width - 80,
+    height: width / 7,
+    backgroundColor: "#FF264D",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 7,
+    borderRadius: width / 6,
+  },
+  secondBtnText: { color: "#fff", fontWeight: "700", fontSize: 18 },
 });
