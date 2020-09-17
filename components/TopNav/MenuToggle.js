@@ -6,7 +6,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function MenuToggle({ navigation }) {
   return (
-    <View style={{ alignItems: "center", justifyContent: "center" }}>
+    <View style={{ alignItems: "flex-end", justifyContent: "center",right:5,top:5 }}>
       <TouchableOpacity
         onPress={() =>
           navigation.push("QrScreen", {
