@@ -79,8 +79,8 @@ const MainTabScreen = ({route}) => {
     return(
     <HomeStack.Navigator headerMode='none'>
         <HomeStack.Screen name="home" component={HomeTabs}  initialParams={{isEnabled,isEnabled1,isEnabled2}} />
-        <ServerStack.Screen name="ServerScreen" component={ServerScreen} />
-        <ChefStack.Screen name="ChefScreen" component={ChefScreen} />
+        <HomeStack.Screen name="ServerScreen" component={ServerScreen} />
+        <HomeStack.Screen name="ChefScreen" component={ChefScreen} />
 
 
     </HomeStack.Navigator>

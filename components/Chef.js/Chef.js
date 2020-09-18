@@ -91,18 +91,18 @@ const Chef=({navigation})=>{
                     {tab==0?<NewOrder 
                     orderDetail={CustomerOrder}
                     navigation={navigation}
-                    pageRoutedFrom={"ServerPrep"}/>
+                    pageRoutedFrom={"ChefNew"}/>
                     :tab==1?<Preparingtab
                     orderDetail={CustomerOrder}
                     navigation={navigation}
-                    pageRoutedFrom={"ServerPrep"}/>
+                    pageRoutedFrom={"ChefNew"}/>
                     :tab==2?<Ready  
                     orderDetail={CustomerOrder}
                     navigation={navigation}
-                    pageRoutedFrom={"ServerPrep"}/>:
+                    pageRoutedFrom={"ChefNew"}/>:
                     <All  orderDetail={CustomerOrder}
                     navigation={navigation}
-                    pageRoutedFrom={"ServerPrep"}/>}
+                    pageRoutedFrom={"ChefNew"}/>}
 
                 </View>
             </View>   

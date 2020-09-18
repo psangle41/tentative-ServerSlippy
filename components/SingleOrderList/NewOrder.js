@@ -12,24 +12,26 @@ const NewOrder=({orderDetail,navigation,pageRoutedFrom})=>{
     const [selectedId, setSelectedId] = useState(null);
     let Order = orderDetail;
 
-    const handleNewView = () => {
-        if (pageRoutedFrom === "ChefNew") {
-          navigation.push("OrderChefInfo", {
-            order: Order,
-            navigation: navigation,
-            pageTitle: "Order Details",
-          });
-        } else {
-          //name based on order state and server is routing
-          navigation.push("OrderInfo", {
-            order: Order,
-            navigation: navigation,
-            pageTitle: "Order Details",
-            tableNo: Order.tableNo,
-            finalOrder: Order,
-          });
-        }
-      };
+    const handleNewView = ({item}) => {
+      if (pageRoutedFrom === "ChefNew") {
+        navigation.push("OrderChefInfo", {
+          order: item,
+          navigation: navigation,
+          pageTitle: "Order Details",
+        });
+      } else {
+        //name based on order state and server is routing
+        navigation.push("OrderInfo", {
+          order: item,
+          navigation: navigation,
+          pageTitle: "Order Details",
+          tableNo: item.tableNo,
+          finalOrder: item,
+        });
+      }
+    };
+  
+  
     
     let [fontsLoaded] = useFonts({
         "Poppins-Light": require('../../assets/fonts/Poppins-Light.ttf'),
@@ -47,7 +49,7 @@ const NewOrder=({orderDetail,navigation,pageRoutedFrom})=>{
         return (
             item.orderState=="new"?
 
-            <View style={styles.tabbContainer}>
+            <TouchableOpacity style={styles.tabbContainer} onPress={() => handleNewView({item})}>
                 <View style={styles.numberContainer}>
                 <Text style={styles.numText}>
                         {item.tableNo}
@@ -59,16 +61,16 @@ const NewOrder=({orderDetail,navigation,pageRoutedFrom})=>{
                     <Text style={styles.stateText}>{item.orderState}</Text>
                 </View>
                 </View>
-                <TouchableOpacity style={styles.texxt} onPress={() => handleNewView()}> 
+                <View style={styles.texxt} > 
                 <Text style={styles.dishText}>{item.dishSelected[0].name},{item.dishSelected[1].name},...</Text>
                 <Text style={styles.dishText}>{item.code}/ ${item.total}</Text>
 
-                </TouchableOpacity>
-                <TouchableOpacity style={{marginLeft:windowWidth*0.8,justifyContent:"center"}}  onPress={() => navigation.navigate('AddCustom')}> 
+                </View>
+                <View style={{marginLeft:windowWidth*0.8,justifyContent:"center"}}  onPress={() => navigation.navigate('AddCustom')}> 
                 <Arrow/>
-                </TouchableOpacity>
+                </View>
             
-            </View>
+            </TouchableOpacity>
             
 
             :null
