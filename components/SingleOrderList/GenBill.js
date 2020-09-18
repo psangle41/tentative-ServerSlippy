@@ -1,53 +1,49 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, FlatList,Dimensions,TouchableOpacity,UIManager,LayoutAnimation} from 'react-native';
-
-import { AppLoading } from "expo";
+import { StyleSheet, Text, View, FlatList,Dimensions,TouchableOpacity,} from 'react-native';
 import * as Font from "expo-font";
+import { AppLoading } from "expo";
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 import Arrow from '../img/arrow'
 
-
-
-const Preparingtab=({orderDetail,navigation,pageRoutedFrom})=>{
+const GenBill=({orderDetail,navigation,pageRoutedFrom})=>{
     const [selectedId, setSelectedId] = useState(null);
     let Order = orderDetail;
 
-    const handleNewView = ({item}) => {
-      if (pageRoutedFrom === "ChefNew") {
-        navigation.push("OrderChefInfo", {
-          order: item,
-          navigation: navigation,
-          pageTitle: "Order Details",
-        });
-      } else {
-        //name based on order state and server is routing
-        navigation.push("OrderInfo", {
-          order: item,
-          navigation: navigation,
-          pageTitle: "Order Details",
-          tableNo: item.tableNo,
-          finalOrder: item,
-        });
-      }
-    };
-  
-
+    const handleNewView = () => {
+        if (pageRoutedFrom === "ChefNew") {
+          navigation.push("OrderChefInfo", {
+            order: Order,
+            navigation: navigation,
+            pageTitle: "Order Details",
+          });
+        } else {
+          //name based on order state and server is routing
+          navigation.push("OrderInfo", {
+            order: Order,
+            navigation: navigation,
+            pageTitle: "Order Details",
+            tableNo: Order.tableNo,
+            finalOrder: Order,
+          });
+        }
+      };
+    
     let [fontsLoaded] = useFonts({
         "Poppins-Light": require('../../assets/fonts/Poppins-Light.ttf'),
       });
     
       if (!fontsLoaded) {
         return <AppLoading />;
+        
       }
-
       const renderItem = ({ item }) => {
-        const backgroundColor = item.orderState === "prep"? "#f7a500" : item.orderState === "ready"?"#00b406":"#e81156";
-
-
+        const backgroundColor = item.orderState === "Generate"? "#f7a500" : "#00b406"
+       
         return (
-            item.orderState=="prep"?
-            <TouchableOpacity style={styles.tabbContainer} onPress={() => handleNewView({item})}>
+            item.orderState=="Generate"?
+            <TouchableOpacity style={styles.tabbContainer} onPress={() => handleNewView()}>
             <View style={styles.numberContainer}>
             <Text style={styles.numText}>
                     {item.tableNo}
@@ -64,12 +60,11 @@ const Preparingtab=({orderDetail,navigation,pageRoutedFrom})=>{
               <Text style={styles.dishText}>{item.code}/ ${item.total}</Text>
 
             </View>
-            <View style={{marginLeft:windowWidth*0.8,justifyContent:"center"}}  onPress={() => navigation.navigate('AddCustom')}> 
+            <TouchableOpacity style={{marginLeft:windowWidth*0.8,justifyContent:"center"}} > 
               <Arrow/>
-            </View>
-            
             </TouchableOpacity>
             
+            </TouchableOpacity>
             :null
         );
       };
@@ -152,7 +147,6 @@ const styles=StyleSheet.create({
         fontSize:16,
         fontFamily:"Poppins-Light"
     }
-
     
 })
 function useFonts(fontMap) {
@@ -164,4 +158,4 @@ function useFonts(fontMap) {
     return [fontsLoaded];
   }
 
-export default Preparingtab;
+export default GenBill;

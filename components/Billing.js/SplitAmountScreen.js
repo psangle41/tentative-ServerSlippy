@@ -27,8 +27,6 @@ const SplitAmountScreen = ({ route, navigation }) => {
 
   let [fontsLoaded] = useFonts({
     "Poppins-Light": require("../../assets/fonts/Poppins-Light.ttf"),
-    "Inter-SemiBoldItalic":
-      "https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12",
   });
 
   if (!fontsLoaded) {

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, ImageBackground,Image, KeyboardAvoidingView,TextInput,TouchableOpacity,Dimensions} from 'react-native';
+import { StyleSheet, Text, View, ImageBackground,Image, KeyboardAvoidingView,
+    TextInput,TouchableOpacity,Dimensions,TouchableWithoutFeedback,Keyboard} from 'react-native';
 
 import {AuthContext} from './context'
 import User from '../components/img/user'
@@ -18,7 +19,6 @@ const SignInScreen=({navigation})=>{
         password: '',
         
     });
-    const screenName="Role Selection"
     
     const textInputChange = (val) => {       
         setData({
@@ -45,23 +45,30 @@ const SignInScreen=({navigation})=>{
     return (
         
         <ImageBackground source= {require('../components/img/background.png')} style={styles.image}>
-            <View style={styles.container}>
-                <View>
+            <View style={styles.container}/>
+            
+            <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={{flex:1}}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
                     <Image style ={styles.logo} source= {require('../components/img/swiggy.png')}/>            
                     <Text style={styles.tagline}>Own the best Experience</Text>
-                </View>
-                <View style={styles.ipScreen} >
-                    <User />
-                    <TextInput style ={styles.inputBox} placeholder="Username" placeholderTextColor="#000000" onChangeText={(val) => textInputChange(val)} />
-                </View>
-                <View style={styles.ipScreen} >
-                <Pass />
-                    <TextInput style ={styles.inputBox} placeholder="Password" placeholderTextColor="#000000" secureTextEntry={true}  onChangeText={(val) => handlePasswordChange(val)}  />
-                </View>
-                <TouchableOpacity  style={styles.button} onPress={()=>{loginHandle(data.username, data.password,screenName)}}>
-                    <Text style={styles.continueText}>Continue</Text>
-                </TouchableOpacity>
+                
+            <View style={styles.ipScreen} >
+                <User />
+                <TextInput style ={styles.inputBox} placeholder="Username" placeholderTextColor="#000000" onChangeText={(val) => textInputChange(val)} />
             </View>
+            <View style={styles.ipScreen} >
+            <Pass />
+                <TextInput style ={styles.inputBox} placeholder="Password" placeholderTextColor="#000000" secureTextEntry={true}  onChangeText={(val) => handlePasswordChange(val)}  />
+            </View>
+            <TouchableOpacity  style={styles.button} onPress={()=>{loginHandle(data.username, data.password)}}>
+                <Text style={styles.continueText}>Continue</Text>
+            </TouchableOpacity>
+            </View>
+            </TouchableWithoutFeedback>
+            </KeyboardAvoidingView>
+            
+            
         </ImageBackground>
           
     );
@@ -74,14 +81,15 @@ const styles=StyleSheet.create({
         flex:1,   
     },
     container:{
-        flex:1,
         backgroundColor:"rgba(16,16,16,0.88)",
-        alignItems:"center",
+        position:"absolute",
+        height:windowHeight,
+        width:windowWidth,
+        position:"absolute"       
     },
     logo:{
         width: 125,
         height: 184,
-        left:windowWidth*0.2,
         marginTop: windowHeight*0.15,
         
     },
