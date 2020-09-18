@@ -26,7 +26,7 @@ const All=({orderDetail,navigation,pageRoutedFrom})=>{
         order: item,
         navigation: navigation,
         pageTitle: "Order Details",
-        tableNo: Order.tableNo,
+        tableNo: item.tableNo,
         finalOrder: item,
       });
     }
@@ -44,6 +44,8 @@ const All=({orderDetail,navigation,pageRoutedFrom})=>{
         const backgroundColor = item.orderState === "prep"? "#f7a500" : item.orderState === "ready"?"#00b406":"#e81156";
     
         return (
+          item.orderState=="new"||item.orderState=="ready"||item.orderState=="prep"?
+
           <View style={styles.tabbContainer}>
             <View style={styles.numberContainer}>
             <Text style={styles.numText}>
@@ -66,6 +68,8 @@ const All=({orderDetail,navigation,pageRoutedFrom})=>{
             </TouchableOpacity>
             
             </View>
+            :
+            null
         );
       };
     
