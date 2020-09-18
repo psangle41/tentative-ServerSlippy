@@ -13,7 +13,7 @@ const MainTabStack = createStackNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);
-  const [userToken, setUserToken] = React.useState(0);
+  const [userToken, setUserToken] = React.useState(null);
   const [userToken1, setUserToken1] = React.useState("frf");
 
   const [isEnabled, setIsEnabled] = React.useState(true);

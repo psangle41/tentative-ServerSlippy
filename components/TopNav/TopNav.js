@@ -35,9 +35,13 @@ export default function TopNav({ navigation }) {
                 <HomeSVG />
               </SingleMenuOption>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.push("ProfileScreen", {
-              navigation: navigation,
-            })}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.push("ProfileScreen", {
+                  navigation: navigation,
+                })
+              }
+            >
               <SingleMenuOption key={2} tit="Profile">
                 <ProfileSVG />
               </SingleMenuOption>
