@@ -6,7 +6,7 @@ import {Defs, ClipPath} from 'react-native-svg'
 
 const ServerImg=(props)=>{
     return(
-        <Svg width={50} height={105} viewBox="0 0 50 105" fill="none" {...props}>
+        <Svg width={45} height={100} viewBox="0 0 50 105" fill="none" {...props}>
       <G clipPath="url(#prefix__clip0)">
         <Path
           d="M42.586 56.576c-.173.926-.738 1.072-.54 2.112 0 0-.254 2.916 3.778 5.439 4.033 2.523 5.492-3.375 2.823-5.591-.714-.594-3.373-.85-3.816-2.621l-2.245.661z"

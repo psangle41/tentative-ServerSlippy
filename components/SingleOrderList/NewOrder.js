@@ -92,7 +92,7 @@ const styles=StyleSheet.create({
   tabbContainer:{
       flex:1,
       backgroundColor: "#ffffff",
-      height:windowHeight*0.12,
+      height:windowHeight*0.1,
       borderBottomWidth:1,
       borderBottomColor:'#a9a9a9',
       flexDirection:'row'
@@ -102,7 +102,7 @@ const styles=StyleSheet.create({
   statusBox:{
       backgroundColor: "#ffffff",
       alignItems:'center',
-      height:windowHeight*0.12,
+      height:windowHeight*0.1,
       width:windowWidth*0.12,
       borderBottomWidth:1,
       borderBottomColor:'#a9a9a9',
@@ -121,7 +121,7 @@ const styles=StyleSheet.create({
   stateText:{
       transform: [{ rotate: '270deg'}],
       fontFamily:'Poppins-Light',
-      fontSize:16
+      fontSize:14
   },
   numText:{
       marginRight:windowWidth/25,
@@ -132,10 +132,10 @@ const styles=StyleSheet.create({
 
   numberContainer:{
       position:"absolute",
-      top:windowHeight*0.01,
+      top:windowHeight*0.005,
       width:windowWidth*0.23,
       backgroundColor: "#ffffff",
-      height:windowHeight*0.10,
+      height:windowHeight*0.085,
       alignItems:"flex-end",
       justifyContent:"center",
       borderBottomRightRadius:50,
@@ -152,10 +152,9 @@ const styles=StyleSheet.create({
       
   },
   dishText:{
-      fontSize:16,
+      fontSize:14,
       fontFamily:"Poppins-Light"
   }
-
   
 })
 function useFonts(fontMap) {

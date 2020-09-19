@@ -33,8 +33,9 @@ const Server = ({ navigation }) => {
         <View style={styles.titleContainer}>
           <View style={styles.ContainerTwo}>
             <TopNav navigation={navigation} />
+            <View style={{ flexDirection: "row", top:2}}>
+            <View style={{ flexDirection: "column", top: windowHeight/120}}>
             <Text style={styles.name}>54th Ave, Marques St..</Text>
-            <View style={{ flexDirection: "row", top: 20 }}>
               <View style={styles.titleTag}>
                 <Text
                   style={{
@@ -47,7 +48,8 @@ const Server = ({ navigation }) => {
                   Mike's cafe
                 </Text>
               </View>
-              <ServerImg style={{ left: windowWidth * 0.45 }} />
+            </View>
+            <ServerImg style={{ left: windowWidth * 0.3, top:15}} />
             </View>
           </View>
         </View>
@@ -105,7 +107,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     width: windowWidth,
-    height: windowWidth / 2,
+    height: windowWidth / 2.35,
     borderBottomLeftRadius: windowWidth / 9,
     borderBottomRightRadius: windowWidth / 9,
     backgroundColor: "#FF264D",
@@ -124,20 +126,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     width: 0.32 * windowWidth,
     left: 0.12 * windowWidth,
-    height: 0.06 * windowHeight,
+    height: 0.05 * windowHeight,
     borderRadius: 20,
     alignItems: "center",
     alignItems: "center",
     justifyContent: "center",
+    top:5
   },
   serverImg: {
     height: 140,
     width: 70,
     left: 0.45 * windowWidth,
     resizeMode: "cover",
-    alignItems: "center",
-    alignItems: "center",
-    justifyContent: "center",
   },
 
   statusContainer: {
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   stateList: {
-    height:windowHeight/1.87,
+    height:windowHeight/1.74,
     flexDirection: "row",
     backgroundColor: "#e5e5e5",
     borderBottomColor: 5,

@@ -74,7 +74,7 @@ export default function TopNav({ navigation }) {
 const styles = StyleSheet.create({
   topNav: {
     flexDirection: "row",
-    marginTop: width / 20,
+    marginTop: width / 44,
     alignItems: "center",
     width: width,
   },
